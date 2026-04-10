@@ -1,4 +1,4 @@
-# AuraHealth Edge 
+# AuraHealth Edge Plus
 
 **AuraHealth Edge** is an AI-powered, privacy-first health and metabolic application designed exclusively for the edge. By utilizing continuous biometric streams alongside computer vision dietary analysis, AuraHealth delivers micro-interventions using on-device Small Language Models (SLMs).
 
