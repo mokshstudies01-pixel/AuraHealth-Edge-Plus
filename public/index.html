@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraHealth Edge | AMD Ryzen™ AI NPU</title>
+    <!-- Modern Typography: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- ONNX Runtime Web for Local Inference Modeling -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    <!-- Chart.js for Wearable Simulation -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-theme">
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass-panel">
+            <div class="logo-container">
+                <div class="logo-orb"></div>
+                <h2>AuraHealth</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active">Dashboard</a>
+                <a href="#" class="nav-item">Metabolic History</a>
+                <a href="#" class="nav-item">NPU Diagnostics</a>
+                <a href="#" class="nav-item">Settings</a>
+            </nav>
+
+            <div class="npu-status-badge">
+                <div class="pulse-dot"></div>
+                <span>Ryzen™ AI Active</span>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-grid">
+            <header class="dashboard-header glass-panel">
+                <h1>Metabolic Intelligence</h1>
+                <div class="header-metrics">
+                    <div class="power-toggle-container tooltip-container">
+                        <span class="toggle-label">Power Efficiency Mode</span>
+                        <label class="switch">
+                            <input type="checkbox" id="power-mode-toggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+                        <div class="tooltip-text">NPU offloading reduces thermal throttling and extends battery longevity.</div>
+                    </div>
+                    <div class="metric">
+                        <span class="label">Privacy Status</span>
+                        <span class="value green-glow">Zero-Knowledge</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dietary Capture Module -->
+            <section class="vision-module glass-panel span-2-col">
+                <div class="module-header">
+                    <h3>Semantic Dietary Capture (ViT)</h3>
+                    <span class="latency-badge">Inference: <span id="vision-latency">42</span>ms</span>
+                </div>
+                <div class="vision-content">
+                    <div class="camera-feed" id="camera-feed">
+                        <div class="scanner-line"></div>
+                        <!-- Bounding boxes will be injected via JS -->
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sample Meal" class="feed-image">
+                    </div>
+                    <div class="analysis-results">
+                        <h4>Real-Time Macro Estimation</h4>
+                        <div class="macro-bars">
+                            <div class="macro-item">
+                                <span>Protein (32g)</span>
+                                <div class="bar-bg"><div class="bar-fill protein" style="width: 45%;"></div></div>
+                            </div>
+                            <div class="macro-item">
+                                <span>Carbs (45g)</span>
+                                <div class="bar-bg"><div class="bar-fill carbs" style="width: 60%;"></div></div>
+                            </div>
+                            <div class="macro-item">
+                                <span>Fats (18g)</span>
+                                <div class="bar-bg"><div class="bar-fill fats" style="width: 25%;"></div></div>
+                            </div>
+                        </div>
+                        <div class="caloric-total">
+                            <span class="big-number">470</span><span class="unit">kcal</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NPU Telemetry Module -->
+            <section class="telemetry-module glass-panel">
+                <div class="module-header">
+                    <h3>XDNA™ NPU Telemetry</h3>
+                </div>
+                <div class="telemetry-grid">
+                    <div class="tel-stat">
+                        <span class="tel-label">MAC Array Util</span>
+                        <span class="tel-value" id="mac-util">82%</span>
+                    </div>
+                    <div class="tel-stat">
+                        <span class="tel-label">Compute Tiles</span>
+                        <span class="tel-value" id="active-tiles">14 / 32</span>
+                    </div>
+                    <div class="tel-stat">
+                        <span class="tel-label">Real-Time TOPS</span>
+                        <span class="tel-value" id="current-tops">14.2 TOPS</span>
+                    </div>
+                    <div class="tel-stat">
+                        <span class="tel-label">Core Temp</span>
+                        <span class="tel-value" id="core-temp">42.1 °C</span>
+                    </div>
+                    <div class="tel-stat">
+                        <span class="tel-label">Package Power</span>
+                        <span class="tel-value" id="power-draw">1.4 W</span>
+                    </div>
+                    <div class="tel-stat">
+                        <span class="tel-label">CPU State</span>
+                        <span class="tel-value sleep-state">Asleep (0.2%)</span>
+                    </div>
+                </div>
+                <div class="quantization-status">
+                    <span>Model: EfficientViT-L2</span>
+                    <span class="badge">INT4/INT8 Quantized</span>
+                </div>
+            </section>
+
+            <!-- Wearables Stream Module -->
+            <section class="wearable-module glass-panel span-full">
+                <div class="module-header">
+                    <h3>Real-Time Wearable Fusion (PPG/ECG)</h3>
+                    <span class="live-indicator"><div class="pulse-dot red"></div> Live Sync</span>
+                </div>
+                <div class="chart-container">
+                    <canvas id="wearableChart"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Micro-Intervention Nudge Popup (Hidden by default) -->
+    <div id="nudge-overlay" class="nudge-overlay">
+        <div class="nudge-modal glass-panel">
+            <div class="nudge-icon">🧠</div>
+            <h3 id="nudge-title">Cortisol Spike Detected</h3>
+            <p id="nudge-desc">Ambient sensors & PPG detect high stress alongside a potential meal event.</p>
+            <p class="nudge-action" id="nudge-recommendation">Recommendation: 60-Second Coherence Breathing before eating.</p>
+            <div class="nudge-buttons">
+                <button class="btn-primary" onclick="closeNudge()">Start Breathing</button>
+                <button class="btn-secondary" onclick="closeNudge()">Dismiss</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="vision.js"></script>
+    <script src="wearables.js"></script>
+    <script src="npu_telemetry.js"></script>
+    <script src="nudge.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
